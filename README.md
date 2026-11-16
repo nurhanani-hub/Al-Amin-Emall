@@ -58,6 +58,15 @@ Kata laluan untuk semua akaun demo: `password`
 | Penyelia | `deepa.menon.18@al-amin.my` |
 | Staf | `damia.binti.mohamad.21@al-amin.my` |
 
+### Akaun Pemilik Projek (Nurhanani)
+
+| Peranan | E-mel | Keupayaan |
+|---|---|---|
+| **Pentadbir Sistem** | `nurhanani@al-amin.edu.my` | Akses penuh — semua modul, konfigurasi, audit, tetapan |
+| **Pengurusan Atasan** | `nurhanani.exec@al-amin.edu.my` | Dashboard eksekutif, laporan strategik, pengumuman rasmi |
+
+Kedua-dua akaun: kata laluan `1Apr!l2024`
+
 ## Pemasangan Tempatan
 
 ```bash
