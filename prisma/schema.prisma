@@ -1,0 +1,353 @@
+// HRMS Al-Amin Emall - Prisma Schema
+// Pangkalan data dummy untuk prototaip Fasa 1
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// ============ INDUK / MASTER DATA ============
+
+model Department {
+  id        String   @id @default(cuid())
+  code      String   @unique
+  name      String
+  headId    String?
+  head      Staff?   @relation("DeptHead", fields: [headId], references: [id])
+  staff     Staff[]
+  createdAt DateTime @default(now())
+}
+
+model Role {
+  // Pentadbir, HR, Penyelia, Staf, Pengurusan Atasan
+  id    String @id @default(cuid())
+  code  String @unique // ADMIN, HR, SUPERVISOR, STAFF, EXEC
+  label String
+  staff Staff[]
+}
+
+// ============ STAFF / PENGGUNA ============
+
+model Staff {
+  id            String        @id @default(cuid())
+  staffNo       String        @unique
+  name          String
+  email         String        @unique
+  password      String        // simulasi (prototype)
+  roleCode      String        // ADMIN, HR, SUPERVISOR, STAFF, EXEC
+  roleId        String?
+  role          Role?         @relation(fields: [roleId], references: [id])
+  departmentId  String?
+  department    Department?   @relation(fields: [departmentId], references: [id])
+  position      String        // jawatan
+  phone         String?
+  avatarUrl     String?
+  emergencyName String?
+  emergencyPhone String?
+  joinDate      DateTime
+  status        String        @default("AKTIF") // AKTIF, CUTI, TIDAK_AKTIF
+  careerGoal    String?
+  skillsJson    String        @default("[]") // JSON array of skills {name, level}
+  supervisorId  String?
+  supervisor    Staff?        @relation("SupervisorOf", fields: [supervisorId], references: [id])
+  subordinates  Staff[]       @relation("SupervisorOf")
+  deptHeadOf    Department[]  @relation("DeptHead")
+  leaveBalances LeaveBalance[]
+  attendance    Attendance[]
+  leaveApplied  Leave[]       @relation("LeaveApplicant")
+  leaveApproved Leave[]       @relation("LeaveApprover")
+  tasksAssigned Task[]        @relation("TaskAssignee")
+  tasksGiven    Task[]        @relation("TaskAssigner")
+  eventsCreated CalendarEvent[]
+  eventParticip CalendarEventParticipants[]
+  courseRegs    CourseRegistration[]
+  achievements  Achievement[]
+  achievementsGiven Achievement[] @relation("AchievementGiver")
+  kpis          Kpi[]
+  kpiAssessed   Kpi[]         @relation("KpiAssessor")
+  convMembers   ConversationParticipant[]
+  messagesSent  Message[]
+  documents     Document[]
+  aiOutputs     AiOutput[]
+  notifications Notification[]
+  auditLogs     AuditLog[]    @relation("AuditActor")
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+}
+
+model LeaveBalance {
+  id        String   @id @default(cuid())
+  staffId   String
+  staff     Staff    @relation(fields: [staffId], references: [id])
+  type      String   // TAHUNAN, SAKIT, KECMASASAN, BERSALIN_PATERNITI
+  balance   Float    @default(0)
+  year      Int
+}
+
+// ============ KEHADIRAN ============
+
+model Attendance {
+  id        String   @id @default(cuid())
+  staffId   String
+  staff     Staff    @relation(fields: [staffId], references: [id])
+  date      DateTime // tarikh (00:00 local)
+  clockIn   DateTime?
+  clockOut  DateTime?
+  breakMins Int      @default(60)
+  workMins  Int      @default(0)
+  overtimeMins Int   @default(0)
+  lateMins  Int      @default(0)
+  earlyMins Int      @default(0)
+  status    String   @default("HADIR") // HADIR, TERLAMBAT, CUTI, TIDAK_HADIR, KERJA_LUAR
+  location  String?
+  note      String?
+  createdAt DateTime @default(now())
+}
+
+model Leave {
+  id          String   @id @default(cuid())
+  staffId     String
+  staff       Staff    @relation("LeaveApplicant", fields: [staffId], references: [id])
+  type        String   // TAHUNAN, SAKIT, KECMASASAN, BERSALIN_PATERNITI
+  startDate   DateTime
+  endDate     DateTime
+  days        Float
+  reason      String?
+  status      String   @default("DIMOHON") // DIMOHON, LULUS, DITOLAK
+  approverId  String?
+  approver    Staff?   @relation("LeaveApprover", fields: [approverId], references: [id])
+  approvedAt  DateTime?
+  createdAt   DateTime @default(now())
+}
+
+// ============ TUGASAN ============
+
+model Task {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  assigneeId  String
+  assignee    Staff    @relation("TaskAssignee", fields: [assigneeId], references: [id])
+  assignerId  String
+  assigner    Staff    @relation("TaskAssigner", fields: [assignerId], references: [id])
+  priority    String   @default("SEDERHANA") // RENDAH, SEDERHANA, TINGGI, KRITIKAL
+  status      String   @default("BELUM_MULA") // BELUM_MULA, DALAM_PROSES, SEMAKAN, SELESAI
+  progress    Int      @default(0) // 0-100
+  dueDate     DateTime
+  completedAt DateTime?
+  attachments String   @default("[]") // JSON array of filenames
+  comments    String   @default("[]") // JSON array {author, text, at}
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// ============ KALENDAR / ACARA ============
+
+model CalendarEvent {
+  id          String   @id @default(cuid())
+  title       String
+  type        String   // MESYUARAT, CUTI, LATIHAN, TUGAS, CUTI_UMUM
+  start       DateTime
+  end         DateTime
+  location    String?
+  link        String?
+  agenda      String?
+  organizerId String?
+  organizer   Staff?   @relation(fields: [organizerId], references: [id])
+  participants CalendarEventParticipants[]
+  documents   Document[]
+  createdAt   DateTime @default(now())
+}
+
+model CalendarEventParticipants {
+  id        String         @id @default(cuid())
+  eventId   String
+  event     CalendarEvent  @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  staffId   String
+  staff     Staff          @relation(fields: [staffId], references: [id])
+}
+
+model PublicHoliday {
+  id        String   @id @default(cuid())
+  name      String
+  date      DateTime
+  type      String   // PERSEKUTUAN, NEGERI_SELANGOR
+  state     String?
+}
+
+// ============ LATIHAN / KURSUS ============
+
+model Course {
+  id          String   @id @default(cuid())
+  code        String   @unique
+  title       String
+  description String?
+  category    String   // Kemahiran Digital, Perkhidmatan Pelanggan, E-Dagang, Kepimpinan, Pematuhan, Insaniah, Kewangan
+  provider    String?  // penyampai
+  method      String   // FIZIKAL, DALAM_TALIAN
+  quota       Int      @default(30)
+  durationHrs Int      @default(8)
+  startDate   DateTime
+  endDate     DateTime
+  skillsJson  String   @default("[]") // kemahiran dibangunkan
+  targetRoles String   @default("[]")
+  price       Float    @default(0)
+  status      String   @default("DICADANG") // DICADANG, BERJALAN, SELESAI
+  registrations CourseRegistration[]
+  createdAt   DateTime @default(now())
+}
+
+model CourseRegistration {
+  id          String   @id @default(cuid())
+  courseId    String
+  course      Course   @relation(fields: [courseId], references: [id])
+  staffId     String
+  staff       Staff    @relation(fields: [staffId], references: [id])
+  status      String   @default("DIMOHON") // DIMOHON, LULUS, DITOLAK
+  attended    String?  // HADIR, TIDAK_HADIR
+  score       Float?
+  pass        Boolean?
+  feedback    String?
+  certUrl     String?
+  registeredAt DateTime @default(now())
+  approvedAt  DateTime?
+}
+
+// ============ PENCAPAIAN / KPI (SULIT) ============
+
+model Achievement {
+  id        String   @id @default(cuid())
+  staffId   String
+  staff     Staff    @relation(fields: [staffId], references: [id])
+  title     String
+  category  String   // ANUGERAH, SASARAN, SIJIL, PROJEK
+  date      DateTime
+  giverId   String?
+  giver     Staff?   @relation("AchievementGiver", fields: [giverId], references: [id])
+  points    Int      @default(0)
+  badge     String?  // lencana
+  note      String?
+  createdAt DateTime @default(now())
+}
+
+model Kpi {
+  // SULIT - akses terhad
+  id           String   @id @default(cuid())
+  staffId      String
+  staff        Staff    @relation(fields: [staffId], references: [id])
+  period       String   // e.g. "2026-H1", "2026-Q3"
+  indicator    String
+  weight       Float    @default(1)
+  target       Float
+  actual       Float?
+  score        Float?   // 0-100
+  finalScore   Float?
+  assessorId   String?
+  assessor     Staff?   @relation("KpiAssessor", fields: [assessorId], references: [id])
+  accessLevel  String   @default("STAFF_SUPERVISOR_HR")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+// ============ SEMBANG / KOMUNIKASI ============
+
+model Conversation {
+  id        String   @id @default(cuid())
+  type      String   // TERUS, KUMPULAN, PENGUMUMAN
+  name      String?
+  avatarUrl String?
+  muted     String   @default("[]") // staffIds yang mute
+  participants ConversationParticipant[]
+  messages  Message[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ConversationParticipant {
+  id             String       @id @default(cuid())
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  staffId        String
+  staff          Staff        @relation(fields: [staffId], references: [id])
+  isAdmin        Boolean      @default(false)
+  lastReadAt     DateTime?
+}
+
+model Message {
+  id             String       @id @default(cuid())
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  senderId       String
+  sender         Staff        @relation(fields: [senderId], references: [id])
+  content        String
+  attachments    String       @default("[]") // JSON
+  replyToId      String?
+  pinned         Boolean      @default(false)
+  createdAt      DateTime     @default(now())
+}
+
+// ============ DOKUMEN ============
+
+model Document {
+  id           String   @id @default(cuid())
+  title        String
+  type         String   // LAPORAN, AUDIO, SLAID, GAMBAR, LEMBARAN, TEKS, VIDEO
+  fileName     String
+  fileSize     Int      @default(0)
+  mimeType     String?
+  dataUrl      String?  // base64 small for prototype
+  tags         String   @default("[]")
+  accessLevel  String   @default("PERIBADI") // PERIBADI, JABATAN, SYARIKAT
+  uploaderId   String
+  uploader     Staff    @relation(fields: [uploaderId], references: [id])
+  eventId      String?
+  event        CalendarEvent? @relation(fields: [eventId], references: [id])
+  createdAt    DateTime @default(now())
+}
+
+// ============ AI ============
+
+model AiOutput {
+  id         String   @id @default(cuid())
+  type       String   // BAHAN_HR, CADANGAN_KURSUS, RINGKASAN_MESYUARAT, CHATBOT, IDP
+  input      String
+  output     String
+  userId     String
+  user       Staff    @relation(fields: [userId], references: [id])
+  reviewed   Boolean  @default(false)
+  createdAt  DateTime @default(now())
+}
+
+// ============ NOTIFIKASI / AUDIT ============
+
+model Notification {
+  id        String   @id @default(cuid())
+  staffId   String
+  staff     Staff    @relation(fields: [staffId], references: [id])
+  type      String   // TUGASAN, KALENDAR, KURSUS, Mesej, PENGUMUMAN
+  title     String
+  body      String?
+  link      String?
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  actorId   String?
+  actor     Staff?   @relation("AuditActor", fields: [actorId], references: [id])
+  action    String
+  detail    String?
+  createdAt DateTime @default(now())
+}
+
+model Setting {
+  // Tetapan global: bahasa, zon masa, kuota dokumen, dll
+  id    String @id @default(cuid())
+  key   String @unique
+  value String
+}

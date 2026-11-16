@@ -1,0 +1,866 @@
+     1→     1→[Logo Al-Amin Mall]
+     2→     2→
+     3→     3→DOKUMEN KEPERLUAN PRODUK (PRD)
+     4→     4→
+     5→     5→Sistem Pengurusan Sumber Manusia (HRMS) Berasaskan AI
+     6→     6→
+     7→     7→Al-Amin Emall, Malaysia
+     8→     8→
+     9→     9→  -----------------------------------------------------------------------
+    10→    10→  Perkara                 Butiran
+    11→    11→  ----------------------- -----------------------------------------------
+    12→    12→  Nama Produk             HRMS Al-Amin (nama kerja)
+    13→    13→
+    14→    14→  Versi Dokumen           1.1 (Pindaan FR-503, 504, 704, 806, 901, 907,
+    15→    15→                          1005)
+    16→    16→
+    17→    17→  Tarikh                  16 November 2026
+    18→    18→
+    19→    19→  Disediakan oleh         Jurutera Perisian / Pasukan Produk
+    20→    20→
+    21→    21→  Teknologi Utama         React, pangkalan data dummy (simulasi)
+    22→    22→
+    23→    23→  Alat Pembangunan        z.ai dengan model GLM 5.2
+    24→    24→
+    25→    25→  Bahasa Antara Muka      Bahasa Malaysia (utama), English (pilihan)
+    26→    26→
+    27→    27→  Status                  Untuk semakan pihak berkepentingan
+    28→    28→  -----------------------------------------------------------------------
+    29→    29→
+    30→    30→Kandungan
+    31→    31→
+    32→    32→1. Ringkasan Eksekutif
+    33→    33→
+    34→    34→Al-Amin Emall memerlukan satu platform HRMS bersepadu untuk menguruskan
+    35→    35→kehadiran, tugasan dan kemajuan kerja, kalendar, latihan dan kursus,
+    36→    36→pencapaian staf, serta komunikasi dalaman. Platform ini turut
+    37→    37→menyediakan modul AI yang menjana bahan sumber manusia (contohnya draf
+    38→    38→polisi, surat, dan ringkasan mesyuarat) serta mengesyorkan kursus kerja
+    39→    39→yang sesuai berdasarkan peranan dan jurang kemahiran setiap staf.
+    40→    40→
+    41→    41→Fasa pertama dibangunkan sebagai prototaip fungsian menggunakan React
+    42→    42→dan pangkalan data dummy, dibina dengan bantuan z.ai (model GLM 5.2),
+    43→    43→supaya aliran kerja dan antara muka dapat disahkan sebelum pembangunan
+    44→    44→bahagian belakang (backend) sebenar.
+    45→    45→
+    46→    46→2. Latar Belakang dan Pernyataan Masalah
+    47→    47→
+    48→    48→-   Rekod kehadiran dan waktu kerja bersifat manual atau tersebar dalam
+    49→    49→    pelbagai alat, menyukarkan pengesahan dan pelaporan.
+    50→    50→
+    51→    51→-   Status tugasan dan kemajuan kerja sukar dipantau oleh ketua jabatan
+    52→    52→    secara masa nyata.
+    53→    53→
+    54→    54→-   Rekod latihan, kehadiran kursus dan hasil pembelajaran tidak
+    55→    55→    berpusat, menyukarkan perancangan pembangunan staf.
+    56→    56→
+    57→    57→-   Pencapaian dan pengiktirafan staf tidak direkodkan secara sistematik
+    58→    58→    untuk penilaian prestasi.
+    59→    59→
+    60→    60→-   Komunikasi dalaman melalui kumpulan aplikasi pesanan umum
+    61→    61→    menyebabkan dokumen penting (laporan mesyuarat, audio, slaid) hilang
+    62→    62→    atau sukar dicari.
+    63→    63→
+    64→    64→-   Tiada bantuan automatik untuk menyediakan bahan HR dan mencadangkan
+    65→    65→    kursus yang relevan.
+    66→    66→
+    67→    67→3. Objektif dan Petunjuk Prestasi Utama (KPI)
+    68→    68→
+    69→    69→  -------------------------------------------------------------------------
+    70→    70→  Bil.   Objektif                           KPI / Sasaran
+    71→    71→  ------ ---------------------------------- -------------------------------
+    72→    72→  1      Memusatkan rekod HR dalam satu     100% staf didaftarkan dalam
+    73→    73→         platform                           sistem pada fasa perintis
+    74→    74→
+    75→    75→  2      Mengurangkan masa pengurusan       Pengurangan masa penyediaan
+    76→    76→         kehadiran                          laporan kehadiran bulanan
+    77→    77→                                            sekurang-kurangnya 70%
+    78→    78→
+    79→    79→  3      Meningkatkan keterlihatan tugasan  90% tugasan mempunyai status
+    80→    80→                                            dikemas kini mingguan
+    81→    81→
+    82→    82→  4      Meningkatkan penyertaan latihan    Kadar kehadiran kursus 85% atau
+    83→    83→                                            lebih
+    84→    84→
+    85→    85→  5      Memusatkan komunikasi dan dokumen  Sekurang-kurangnya 80% dokumen
+    86→    86→                                            mesyuarat dimuat naik ke sistem
+    87→    87→
+    88→    88→  6      Memanfaatkan AI untuk produktiviti Masa penyediaan draf bahan HR
+    89→    89→         HR                                 berkurang 50%; kadar penerimaan
+    90→    90→                                            cadangan kursus 60% atau lebih
+    91→    91→  -------------------------------------------------------------------------
+    92→    92→
+    93→    93→4. Skop Produk
+    94→    94→
+    95→    95→4.1 Dalam Skop (Fasa 1 - Prototaip)
+    96→    96→
+    97→    97→-   Pengesahan log masuk dan kawalan akses berasaskan peranan (RBAC)
+    98→    98→
+    99→    99→-   Dashboard mengikut peranan
+   100→   100→
+   101→   101→-   Kehadiran dan penjejakan masa
+   102→   102→
+   103→   103→-   Tugasan, kemajuan kerja dan tugasan tertunggak
+   104→   104→
+   105→   105→-   Kalendar (acara, mesyuarat, cuti, latihan)
+   106→   106→
+   107→   107→-   Latihan dan kursus: katalog, pendaftaran, kehadiran, hasil
+   108→   108→
+   109→   109→-   Pencapaian dan pengiktirafan staf
+   110→   110→
+   111→   111→-   Pesanan dalaman (individu dan kumpulan) dengan lampiran
+   112→   112→
+   113→   113→-   Pengurusan dokumen: laporan mesyuarat, audio, slaid
+   114→   114→
+   115→   115→-   Pembantu AI HR: penjanaan bahan, ringkasan, cadangan kursus
+   116→   116→
+   117→   117→-   Laporan asas dan eksport
+   118→   118→
+   119→   119→-   Pangkalan data dummy dengan data contoh realistik
+   120→   120→
+   121→   121→4.2 Luar Skop (Fasa Seterusnya)
+   122→   122→
+   123→   123→-   Pemprosesan gaji penuh serta caruman KWSP, PERKESO dan SIP secara
+   124→   124→    automatik
+   125→   125→
+   126→   126→-   Integrasi mesin cap jari atau perkakasan biometrik
+   127→   127→
+   128→   128→-   Aplikasi mudah alih natif (iOS/Android)
+   129→   129→
+   130→   130→-   Integrasi rasmi dengan sistem HRD Corp dan portal kerajaan
+   131→   131→
+   132→   132→-   Backend pengeluaran dan pangkalan data sebenar (dirancang pada Fasa
+   133→   133→    2)
+   134→   134→
+   135→   135→5. Pengguna dan Peranan
+   136→   136→
+   137→   137→  -----------------------------------------------------------------------
+   138→   138→  Peranan         Penerangan                  Keupayaan Utama
+   139→   139→  --------------- --------------------------- ---------------------------
+   140→   140→  Pentadbir       Menguruskan konfigurasi dan Urus pengguna, peranan,
+   141→   141→  Sistem          akaun                       tetapan, audit log
+   142→   142→
+   143→   143→  Pegawai HR      Menguruskan operasi HR      Kehadiran, cuti, latihan,
+   144→   144→                                              pencapaian, laporan, alat
+   145→   145→                                              AI
+   146→   146→
+   147→   147→  Ketua Jabatan / Menyelia pasukan            Agih tugas, luluskan cuti,
+   148→   148→  Penyelia                                    pantau kemajuan, nilai
+   149→   149→                                              pencapaian
+   150→   150→
+   151→   151→  Staf            Pekerja biasa               Rekod kehadiran, urus
+   152→   152→                                              tugasan, daftar kursus,
+   153→   153→                                              berkomunikasi, muat naik
+   154→   154→                                              dokumen
+   155→   155→
+   156→   156→  Pengurusan      Pembuat keputusan           Lihat dashboard dan laporan
+   157→   157→  Atasan                                      ringkasan
+   158→   158→  -----------------------------------------------------------------------
+   159→   159→
+   160→   160→6. Keperluan Fungsian
+   161→   161→
+   162→   162→Keutamaan: T = Tinggi (wajib Fasa 1), S = Sederhana, R = Rendah.
+   163→   163→
+   164→   164→6.1 Pengesahan dan Kawalan Akses
+   165→   165→
+   166→   166→  -------------------------------------------------------------------------
+   167→   167→  ID       Keperluan                                            Keutamaan
+   168→   168→  -------- ---------------------------------------------------- -----------
+   169→   169→  FR-101   Pengguna boleh log masuk menggunakan e-mel dan kata  T
+   170→   170→           laluan (simulasi dalam prototaip).                   
+   171→   171→
+   172→   172→  FR-102   Sistem menyokong peranan: Pentadbir, HR, Penyelia,   T
+   173→   173→           Staf, Pengurusan Atasan dengan akses menu berbeza.   
+   174→   174→
+   175→   175→  FR-103   Pengguna boleh menukar kata laluan dan mengemas kini S
+   176→   176→           profil (gambar, telefon, kenalan kecemasan).         
+   177→   177→
+   178→   178→  FR-104   Log audit bagi tindakan penting (log masuk, lulus    S
+   179→   179→           cuti, padam dokumen).                                
+   180→   180→  -------------------------------------------------------------------------
+   181→   181→
+   182→   182→6.2 Dashboard
+   183→   183→
+   184→   184→  -------------------------------------------------------------------------
+   185→   185→  ID       Keperluan                                            Keutamaan
+   186→   186→  -------- ---------------------------------------------------- -----------
+   187→   187→  FR-201   Dashboard staf memaparkan kehadiran hari ini,        T
+   188→   188→           tugasan tertunggak, acara akan datang, kursus        
+   189→   189→           berdaftar dan mesej belum dibaca.                    
+   190→   190→
+   191→   191→  FR-202   Dashboard penyelia memaparkan status kehadiran       T
+   192→   192→           pasukan, kemajuan tugasan dan permohonan menunggu    
+   193→   193→           kelulusan.                                           
+   194→   194→
+   195→   195→  FR-203   Dashboard HR memaparkan statistik kehadiran, kadar   S
+   196→   196→           kehadiran kursus, jumlah pencapaian dan carta trend. 
+   197→   197→  -------------------------------------------------------------------------
+   198→   198→
+   199→   199→6.3 Kehadiran dan Penjejakan Masa
+   200→   200→
+   201→   201→  -------------------------------------------------------------------------
+   202→   202→  ID       Keperluan                                            Keutamaan
+   203→   203→  -------- ---------------------------------------------------- -----------
+   204→   204→  FR-301   Staf boleh Masuk (Clock In) dan Keluar (Clock Out)   T
+   205→   205→           dengan cap masa; sokongan rehat dan kerja luar.      
+   206→   206→
+   207→   207→  FR-302   Sistem mengira jam bekerja, kelewatan, keluar awal   T
+   208→   208→           dan kerja lebih masa secara automatik.               
+   209→   209→
+   210→   210→  FR-303   Kehadiran boleh direkod melalui lokasi (geolokasi    S
+   211→   211→           pilihan) dan nota alasan bagi pelarasan manual.      
+   212→   212→
+   213→   213→  FR-304   Permohonan dan kelulusan cuti (tahunan, sakit,       T
+   214→   214→           kecemasan, bersalin/paterniti) dengan baki cuti.     
+   215→   215→
+   216→   216→  FR-305   Laporan kehadiran harian, mingguan, bulanan mengikut T
+   217→   217→           individu atau jabatan; eksport CSV/Excel.            
+   218→   218→
+   219→   219→  FR-306   Amaran apabila had jam bekerja mingguan dilepasi     S
+   220→   220→           mengikut tetapan polisi syarikat.                    
+   221→   221→  -------------------------------------------------------------------------
+   222→   222→
+   223→   223→6.4 Tugasan, Kemajuan Kerja dan Tugasan Tertunggak
+   224→   224→
+   225→   225→  -------------------------------------------------------------------------
+   226→   226→  ID       Keperluan                                            Keutamaan
+   227→   227→  -------- ---------------------------------------------------- -----------
+   228→   228→  FR-401   Penyelia boleh mencipta, menugaskan dan menetapkan   T
+   229→   229→           tarikh akhir serta keutamaan tugasan.                
+   230→   230→
+   231→   231→  FR-402   Papan Kanban (Belum Mula, Dalam Proses, Semakan,     T
+   232→   232→           Selesai) dengan seret dan lepas.                     
+   233→   233→
+   234→   234→  FR-403   Staf mengemas kini peratusan kemajuan, komen dan     T
+   235→   235→           lampiran bagi setiap tugasan.                        
+   236→   236→
+   237→   237→  FR-404   Paparan Tugasan Tertunggak dengan penanda warna bagi T
+   238→   238→           tugasan lewat dan hampir tarikh akhir.               
+   239→   239→
+   240→   240→  FR-405   Notifikasi dalam aplikasi untuk tugasan baharu,      S
+   241→   241→           perubahan status dan tarikh akhir hampir.            
+   242→   242→
+   243→   243→  FR-406   Laporan produktiviti: tugasan siap lawan lewat       S
+   244→   244→           mengikut staf dan tempoh.                            
+   245→   245→  -------------------------------------------------------------------------
+   246→   246→
+   247→   247→6.5 Kalendar
+   248→   248→
+   249→   249→  -------------------------------------------------------------------------
+   250→   250→  ID       Keperluan                                            Keutamaan
+   251→   251→  -------- ---------------------------------------------------- -----------
+   252→   252→  FR-501   Kalendar bersepadu (bulan/minggu/hari) memaparkan    T
+   253→   253→           mesyuarat, cuti, latihan, tarikh akhir tugasan dan   
+   254→   254→           cuti umum.                                           
+   255→   255→
+   256→   256→  FR-502   Penciptaan mesyuarat dengan jemputan peserta,        T
+   257→   257→           lokasi/pautan, agenda dan peringatan.                
+   258→   258→
+   259→   259→  FR-503   Cuti umum persekutuan dan cuti negeri Selangor       S
+   260→   260→           dikonfigurasi oleh HR dan dipaparkan automatik pada  
+   261→   261→           kalendar serta pengiraan kehadiran dan cuti.         
+   262→   262→
+   263→   263→  FR-504   Penyegerakan dengan Google Calendar: staf menyambung S
+   264→   264→           akaun Google (OAuth) supaya mesyuarat, cuti, latihan 
+   265→   265→           dan tarikh akhir tugasan disegerakkan ke Google      
+   266→   266→           Calendar; jemputan mesyuarat boleh dihantar melalui  
+   267→   267→           Google Calendar. Hanya data yang dibenarkan pengguna 
+   268→   268→           disegerakkan.                                        
+   269→   269→  -------------------------------------------------------------------------
+   270→   270→
+   271→   271→6.6 Latihan dan Kursus
+   272→   272→
+   273→   273→  -------------------------------------------------------------------------
+   274→   274→  ID       Keperluan                                            Keutamaan
+   275→   275→  -------- ---------------------------------------------------- -----------
+   276→   276→  FR-601   Katalog kursus: tajuk, penerangan, penyampai,        T
+   277→   277→           tarikh, kaedah (fizikal/dalam talian), kuota,        
+   278→   278→           kategori dan kemahiran dibangunkan.                  
+   279→   279→
+   280→   280→  FR-602   Staf mendaftar kursus; penyelia/HR meluluskan        T
+   281→   281→           pendaftaran.                                         
+   282→   282→
+   283→   283→  FR-603   Rekod kehadiran kursus (hadir/tidak hadir) oleh HR   T
+   284→   284→           atau penyampai.                                      
+   285→   285→
+   286→   286→  FR-604   Rekod hasil kursus: markah ujian, status             T
+   287→   287→           lulus/gagal, maklum balas peserta dan sijil (muat    
+   288→   288→           naik).                                               
+   289→   289→
+   290→   290→  FR-605   Sejarah latihan setiap staf dan jumlah jam latihan   S
+   291→   291→           tahunan.                                             
+   292→   292→
+   293→   293→  FR-606   Penjejakan kelayakan tuntutan HRD Corp (medan        R
+   294→   294→           rujukan sahaja pada Fasa 1).                         
+   295→   295→  -------------------------------------------------------------------------
+   296→   296→
+   297→   297→6.7 Pencapaian Staf
+   298→   298→
+   299→   299→  -------------------------------------------------------------------------
+   300→   300→  ID       Keperluan                                            Keutamaan
+   301→   301→  -------- ---------------------------------------------------- -----------
+   302→   302→  FR-701   HR/penyelia merekod pencapaian (anugerah, sasaran    T
+   303→   303→           dicapai, sijil, projek) dengan kategori dan tarikh.  
+   304→   304→
+   305→   305→  FR-702   Dinding Pengiktirafan: rakan sekerja boleh memberi   S
+   306→   306→           pujian atau lencana digital.                         
+   307→   307→
+   308→   308→  FR-703   Profil pencapaian setiap staf untuk rujukan          S
+   309→   309→           penilaian prestasi tahunan.                          
+   310→   310→
+   311→   311→  FR-704   Paparan skor dan pencapaian yang diperoleh bagi      S
+   312→   312→           setiap staf pada profil sendiri (jumlah mata,        
+   313→   313→           lencana, sejarah). Sistem TIDAK menyediakan papan    
+   314→   314→           kedudukan atau susunan peringkat, dan tiada          
+   315→   315→           perbandingan terus antara staf; skor peribadi hanya  
+   316→   316→           boleh dilihat oleh staf berkenaan, penyelia langsung 
+   317→   317→           dan HR.                                              
+   318→   318→  -------------------------------------------------------------------------
+   319→   319→
+   320→   320→6.8 Komunikasi Dalaman (Gaya Kumpulan WhatsApp)
+   321→   321→
+   322→   322→  -------------------------------------------------------------------------
+   323→   323→  ID       Keperluan                                            Keutamaan
+   324→   324→  -------- ---------------------------------------------------- -----------
+   325→   325→  FR-801   Mesej terus (1 lawan 1) dan kumpulan (jabatan,       T
+   326→   326→           projek, seluruh syarikat).                           
+   327→   327→
+   328→   328→  FR-802   Penghantaran teks, emoji, lampiran fail dan nota     T
+   329→   329→           suara; status dihantar/dibaca.                       
+   330→   330→
+   331→   331→  FR-803   Pengurusan kumpulan: cipta, tambah/keluarkan ahli,   T
+   332→   332→           pentadbir kumpulan, tetapan senyap.                  
+   333→   333→
+   334→   334→  FR-804   Sebutan (@nama), balas mesej, semat mesej dan carian S
+   335→   335→           mesej.                                               
+   336→   336→
+   337→   337→  FR-805   Pengumuman rasmi (siaran satu hala) oleh             S
+   338→   338→           HR/Pengurusan.                                       
+   339→   339→
+   340→   340→  FR-806   Tetapan notifikasi mengikut pengguna (hidup/mati     T
+   341→   341→           bagi mesej, tugasan, kalendar, kursus dan            
+   342→   342→           pengumuman; mod senyap; jadual waktu senyap) dan     
+   343→   343→           berfungsi sesuai pada peranti Android dan iOS.       
+   344→   344→           Pelaksanaan: aplikasi web progresif (PWA) dengan Web 
+   345→   345→           Push; pada iOS ia memerlukan iOS 16.4 ke atas dan    
+   346→   346→           aplikasi ditambah ke Skrin Utama, dengan panduan     
+   347→   347→           ringkas dalam aplikasi. Fasa 2 boleh menambah FCM    
+   348→   348→           (Android) dan APNs (iOS). Prototaip menggunakan      
+   349→   349→           simulasi masa nyata; Fasa 2 menggunakan WebSocket.   
+   350→   350→  -------------------------------------------------------------------------
+   351→   351→
+   352→   352→6.9 Pengurusan Dokumen
+   353→   353→
+   354→   354→  -------------------------------------------------------------------------
+   355→   355→  ID       Keperluan                                            Keutamaan
+   356→   356→  -------- ---------------------------------------------------- -----------
+   357→   357→  FR-901   Muat naik pelbagai jenis fail: dokumen (PDF,         T
+   358→   358→           DOC/DOCX, TXT), lembaran kerja Excel (XLS/XLSX,      
+   359→   359→           CSV), slaid pembentangan (PPT/PPTX, PDF), gambar     
+   360→   360→           (PNG, JPEG/JPG, GIF, WEBP, HEIC), audio mesyuarat    
+   361→   361→           (MP3, M4A, WAV, AAC) dan video pendek (MP4)          
+   362→   362→           bersesuaian. Jenis fail yang dibenarkan boleh        
+   363→   363→           dikonfigurasi oleh Pentadbir.                        
+   364→   364→
+   365→   365→  FR-902   Metadata dokumen: tajuk, jenis, tarikh, mesyuarat    T
+   366→   366→           berkaitan, tag dan tahap akses.                      
+   367→   367→
+   368→   368→  FR-903   Pautan dokumen ke acara kalendar atau mesyuarat      T
+   369→   369→           berkaitan.                                           
+   370→   370→
+   371→   371→  FR-904   Pemain audio dalam aplikasi dan pratonton PDF/slaid. S
+   372→   372→
+   373→   373→  FR-905   Kawalan akses dokumen (peribadi, jabatan, seluruh    S
+   374→   374→           syarikat) dan sejarah versi.                         
+   375→   375→
+   376→   376→  FR-906   Carian dan penapis mengikut nama, jenis, tag,        T
+   377→   377→           tarikh.                                              
+   378→   378→
+   379→   379→  FR-907   Kuota simpanan tinggi bagi setiap pekerja: 10 GB     T
+   380→   380→           seorang untuk dokumen pelbagai jenis; baki dan       
+   381→   381→           penggunaan dipaparkan, amaran pada 80%, dan HR boleh 
+   382→   382→           melaraskan kuota. Had saiz setiap fail boleh         
+   383→   383→           dikonfigurasi (cadangan awal: 100 MB dokumen/gambar, 
+   384→   384→           500 MB audio/video). Prototaip mensimulasikan kuota; 
+   385→   385→           simpanan sebenar 10 GB seorang melalui storan objek  
+   386→   386→           pada Fasa 2 (storan pelayar terhad).                 
+   387→   387→  -------------------------------------------------------------------------
+   388→   388→
+   389→   389→6.10 Modul AI HR
+   390→   390→
+   391→   391→  --------------------------------------------------------------------------
+   392→   392→  ID        Keperluan                                            Keutamaan
+   393→   393→  --------- ---------------------------------------------------- -----------
+   394→   394→  FR-1001   Penjana Bahan HR: draf surat tawaran, surat amaran,  T
+   395→   395→            memo, polisi, perihal tugas dan skrip orientasi      
+   396→   396→            dalam Bahasa Malaysia dan English; boleh disunting   
+   397→   397→            sebelum disimpan.                                    
+   398→   398→
+   399→   399→  FR-1002   Cadangan Kursus Peribadi: berdasarkan jawatan,       T
+   400→   400→            jurang kemahiran, sejarah latihan dan matlamat       
+   401→   401→            kerjaya, sistem mengesyorkan kursus beserta sebab    
+   402→   402→            cadangan.                                            
+   403→   403→
+   404→   404→  FR-1003   Ringkasan Mesyuarat: menjana ringkasan dan senarai   S
+   405→   405→            tindakan daripada nota/transkrip mesyuarat yang      
+   406→   406→            dimuat naik; transkripsi audio ditandakan sebagai    
+   407→   407→            ciri Fasa 2.                                         
+   408→   408→
+   409→   409→  FR-1004   Pembantu Soal Jawab HR (chatbot): menjawab soalan    S
+   410→   410→            lazim polisi cuti, kehadiran dan latihan berdasarkan 
+   411→   411→            dokumen polisi syarikat.                             
+   412→   412→
+   413→   413→  FR-1005   Penjana Pelan Pembangunan Individu (IDP) 6-12 bulan, T
+   414→   414→            digabungkan dengan KPI dan pemarkahan KPI setiap     
+   415→   415→            staf: penetapan penunjuk KPI berpemberat, sasaran,   
+   416→   416→            pencapaian sebenar dan markah akhir mengikut tempoh  
+   417→   417→            penilaian. Data KPI dan markah adalah SULIT: hanya   
+   418→   418→            boleh dilihat oleh staf berkenaan, penyelia langsung 
+   419→   419→            dan HR yang dibenarkan, tidak dipaparkan kepada umum 
+   420→   420→            atau rakan sekerja, dan tidak dihantar kepada model  
+   421→   421→            AI luar melainkan dinyahkenal.                       
+   422→   422→
+   423→   423→  FR-1006   Semua output AI dilabel 'Dijana AI', memerlukan      T
+   424→   424→            semakan manusia, dan tidak digunakan untuk keputusan 
+   425→   425→            HR automatik (pengambilan, pemecatan, gaji).         
+   426→   426→  --------------------------------------------------------------------------
+   427→   427→
+   428→   428→6.11 Laporan dan Pentadbiran
+   429→   429→
+   430→   430→  --------------------------------------------------------------------------
+   431→   431→  ID        Keperluan                                            Keutamaan
+   432→   432→  --------- ---------------------------------------------------- -----------
+   433→   433→  FR-1101   Laporan standard: kehadiran, cuti, tugasan, latihan, T
+   434→   434→            pencapaian; eksport PDF/Excel.                       
+   435→   435→
+   436→   436→  FR-1102   Pengurusan data induk: jabatan, jawatan, jenis cuti, T
+   437→   437→            kategori kursus, cuti umum.                          
+   438→   438→
+   439→   439→  FR-1103   Direktori staf dengan carian dan carta organisasi    S
+   440→   440→            ringkas.                                             
+   441→   441→
+   442→   442→  FR-1104   Tetapan bahasa (BM/EN), zon masa Asia/Kuala_Lumpur   S
+   443→   443→            dan format tarikh DD/MM/YYYY.                        
+   444→   444→  --------------------------------------------------------------------------
+   445→   445→
+   446→   446→7. Modul AI: Bahan HR dan Kursus Kerja Sesuai
+   447→   447→
+   448→   448→7.1 Bahan HR yang Dijana
+   449→   449→
+   450→   450→  -----------------------------------------------------------------------
+   451→   451→  Jenis Bahan         Contoh Kandungan
+   452→   452→  ------------------- ---------------------------------------------------
+   453→   453→  Dokumen Polisi      Draf polisi kehadiran, cuti, kod etika, kerja jarak
+   454→   454→                      jauh
+   455→   455→
+   456→   456→  Surat dan Memo      Surat tawaran, pengesahan jawatan, amaran,
+   457→   457→                      pekeliling dalaman
+   458→   458→
+   459→   459→  Bahan Orientasi     Senarai semak staf baharu, skrip pengenalan
+   460→   460→                      syarikat
+   461→   461→
+   462→   462→  Penilaian           Templat borang penilaian prestasi, soalan temu duga
+   463→   463→                      berstruktur
+   464→   464→
+   465→   465→  Komunikasi          Pengumuman, ucapan penghargaan, ringkasan mesyuarat
+   466→   466→  -----------------------------------------------------------------------
+   467→   467→
+   468→   468→7.2 Cadangan Kategori Kursus Kerja
+   469→   469→
+   470→   470→  -----------------------------------------------------------------------
+   471→   471→  Kategori            Contoh Kursus                   Sasaran
+   472→   472→  ------------------- ------------------------------- -------------------
+   473→   473→  Kemahiran Digital   Microsoft Excel lanjutan,       Semua staf
+   474→   474→                      Google Workspace, asas AI dan   
+   475→   475→                      prompt untuk kerja              
+   476→   476→
+   477→   477→  Perkhidmatan        Khidmat pelanggan e-dagang,     Barisan hadapan,
+   478→   478→  Pelanggan           pengendalian aduan, komunikasi  jualan
+   479→   479→                      berkesan                        
+   480→   480→
+   481→   481→  E-Dagang dan Jualan Pengurusan inventori, pemasaran Jualan, pemasaran,
+   482→   482→                      digital, analitik jualan        operasi
+   483→   483→
+   484→   484→  Kepimpinan          Asas penyeliaan, pengurusan     Penyelia, pengurus
+   485→   485→                      prestasi, bimbingan pasukan     
+   486→   486→
+   487→   487→  Pematuhan dan       PDPA 2010, keselamatan dan      Semua staf
+   488→   488→  Keselamatan         kesihatan pekerjaan, etika dan  
+   489→   489→                      anti-rasuah                     
+   490→   490→
+   491→   491→  Kemahiran Insaniah  Pengurusan masa, komunikasi,    Semua staf
+   492→   492→                      kerja berpasukan, pengurusan    
+   493→   493→                      tekanan                         
+   494→   494→
+   495→   495→  Kewangan Asas       Asas perakaunan, bajet jabatan  Kewangan, pengurus
+   496→   496→  -----------------------------------------------------------------------
+   497→   497→
+   498→   498→7.3 Logik Cadangan Kursus
+   499→   499→
+   500→   500→-   Input: jawatan, jabatan, tahap kemahiran, sejarah kursus, markah
+   501→   501→    penilaian, matlamat kerjaya dan keutamaan jabatan.
+   502→   502→
+   503→   503→-   Proses: padanan kemahiran lawan keperluan jawatan (skill gap), tapis
+   504→   504→    kursus yang telah diambil, susun mengikut kerelevanan.
+   505→   505→
+   506→   506→-   Output: 3-5 kursus disyorkan dengan sebab ringkas, tempoh dan tarikh
+   507→   507→    sesi terdekat.
+   508→   508→
+   509→   509→-   Prototaip: logik padanan berasaskan peraturan pada data dummy,
+   510→   510→    dengan panggilan model AI untuk penjelasan; Fasa 2 boleh menambah
+   511→   511→    model pengesyoran sebenar.
+   512→   512→
+   513→   513→7.4 Tadbir Urus AI
+   514→   514→
+   515→   515→-   Output AI sentiasa ditandakan dan perlu disemak manusia sebelum
+   516→   516→    digunakan.
+   517→   517→
+   518→   518→-   Data peribadi sensitif (gaji, kesihatan, tindakan tatatertib) tidak
+   519→   519→    dihantar kepada model AI luar tanpa kelulusan; gunakan data dummy
+   520→   520→    atau tanpa nama dalam prototaip.
+   521→   521→
+   522→   522→-   Log prompt dan output disimpan untuk audit.
+   523→   523→
+   524→   524→-   Ujian berkala untuk bias dan ketepatan, terutama cadangan kursus.
+   525→   525→
+   526→   526→8. Keperluan Bukan Fungsian
+   527→   527→
+   528→   528→  ---------------------------------------------------------------------------
+   529→   529→  Kategori              Keperluan
+   530→   530→  --------------------- -----------------------------------------------------
+   531→   531→  Prestasi              Halaman utama dimuat dalam 3 saat pada sambungan 4G;
+   532→   532→                        tindak balas interaksi di bawah 300 ms bagi data
+   533→   533→                        dummy.
+   534→   534→
+   535→   535→  Keselamatan           RBAC (termasuk akses terhad data KPI dan markah),
+   536→   536→                        penyulitan data sulit, sesi tamat masa, kata laluan
+   537→   537→                        tidak disimpan teks biasa (hash pada Fasa 2), HTTPS,
+   538→   538→                        perlindungan XSS/CSRF, pengesahan jenis dan saiz
+   539→   539→                        fail.
+   540→   540→
+   541→   541→  Privasi               Mematuhi Akta Perlindungan Data Peribadi 2010 (PDPA):
+   542→   542→                        persetujuan, tujuan terhad, akses terhad dan tempoh
+   543→   543→                        simpanan.
+   544→   544→
+   545→   545→  Kebolehgunaan         Responsif (desktop, tablet, telefon), aksesibiliti ke
+   546→   546→                        tahap WCAG 2.1 AA, antara muka Bahasa Malaysia.
+   547→   547→
+   548→   548→  Kebolehpercayaan      Fasa 2 sasaran ketersediaan 99.5%; sandaran harian.
+   549→   549→
+   550→   550→  Kebolehselenggaraan   Kod TypeScript, komponen modular, ujian unit dan e2e,
+   551→   551→                        dokumentasi.
+   552→   552→
+   553→   553→  Keserasian            Chrome, Edge, Safari, Firefox (dua versi terkini).
+   554→   554→
+   555→   555→  Pelokalan             Bahasa Malaysia dan English, zon masa MYT, mata wang
+   556→   556→                        RM.
+   557→   557→  ---------------------------------------------------------------------------
+   558→   558→
+   559→   559→9. Seni Bina dan Teknologi
+   560→   560→
+   561→   561→  -----------------------------------------------------------------------
+   562→   562→  Lapisan            Pilihan Teknologi (Cadangan)
+   563→   563→  ------------------ ----------------------------------------------------
+   564→   564→  Rangka Kerja UI    React 18+ dengan Vite dan TypeScript
+   565→   565→
+   566→   566→  Penghalaan         React Router
+   567→   567→
+   568→   568→  Gaya / Komponen    Tailwind CSS dan pustaka komponen (contoh:
+   569→   569→                     shadcn/ui)
+   570→   570→
+   571→   571→  Pengurusan Keadaan TanStack Query dan Zustand
+   572→   572→  / Data             
+   573→   573→
+   574→   574→  Pangkalan Data     Mock Service Worker (MSW) atau json-server dengan
+   575→   575→  Dummy              fail JSON, dan IndexedDB/localStorage untuk
+   576→   576→                     kegigihan data pelayar; pustaka Faker untuk data
+   577→   577→                     contoh
+   578→   578→
+   579→   579→  Kalendar dan Carta FullCalendar atau react-big-calendar; Google
+   580→   580→                     Calendar API (OAuth); Recharts
+   581→   581→
+   582→   582→  Papan Kanban       dnd-kit
+   583→   583→
+   584→   584→  Sembang Masa Nyata Simulasi menggunakan BroadcastChannel dan stor
+   585→   585→  (Prototaip)        setempat; Fasa 2: WebSocket (Socket.IO)
+   586→   586→
+   587→   587→  Muat Naik Fail     Fail disimpan dalam IndexedDB (Blob); Fasa 2: storan
+   588→   588→  (Prototaip)        objek
+   589→   589→
+   590→   590→  AI                 Panggilan API ke model GLM melalui lapisan
+   591→   591→                     perkhidmatan yang boleh ditukar; kunci API tidak
+   592→   592→                     didedahkan dalam kod pelanggan (guna proksi ringkas)
+   593→   593→
+   594→   594→  Ujian              Vitest, React Testing Library, Playwright
+   595→   595→  -----------------------------------------------------------------------
+   596→   596→
+   597→   597→Prinsip utama: lapisan akses data diasingkan (repository/service) supaya
+   598→   598→pangkalan data dummy boleh digantikan dengan API backend sebenar pada
+   599→   599→Fasa 2 tanpa mengubah komponen UI.
+   600→   600→
+   601→   601→10. Model Data (Pangkalan Data Dummy)
+   602→   602→
+   603→   603→  ---------------------------------------------------------------------------
+   604→   604→  Entiti              Medan Utama                          Hubungan
+   605→   605→  ------------------- ------------------------------------ ------------------
+   606→   606→  Pengguna/Staf       id, nama, e-mel, peranan, jabatanId, Jabatan, Peranan
+   607→   607→                      jawatan, tarikhMasuk, status         
+   608→   608→
+   609→   609→  Jabatan             id, nama, ketuaId                    Staf
+   610→   610→
+   611→   611→  Kehadiran           id, stafId, tarikh, masaMasuk,       Staf
+   612→   612→                      masaKeluar, jamKerja, status, nota   
+   613→   613→
+   614→   614→  Cuti                id, stafId, jenis, tarikhMula,       Staf
+   615→   615→                      tarikhTamat, status, pelulusId       
+   616→   616→
+   617→   617→  Tugasan             id, tajuk, penerangan, penerimaId,   Staf
+   618→   618→                      pemberiId, keutamaan, status,        
+   619→   619→                      peratusan, tarikhAkhir               
+   620→   620→
+   621→   621→  Acara               id, tajuk, jenis, mula, tamat,       Staf, Dokumen
+   622→   622→                      lokasi, pesertaIds                   
+   623→   623→
+   624→   624→  Kursus              id, tajuk, kategori, penyampai,      Pendaftaran
+   625→   625→                      kaedah, kuota, tarikh, kemahiran     
+   626→   626→
+   627→   627→  PendaftaranKursus   id, kursusId, stafId, status,        Kursus, Staf
+   628→   628→                      kehadiran, markah, lulus,            
+   629→   629→                      maklumBalas, sijilId                 
+   630→   630→
+   631→   631→  Pencapaian          id, stafId, tajuk, kategori, tarikh, Staf
+   632→   632→                      pemberiId, mata                      
+   633→   633→
+   634→   634→  KPI (Sulit)         id, stafId, tempoh, penunjuk,        Staf
+   635→   635→                      pemberat, sasaran, pencapaian,       
+   636→   636→                      markah, markahAkhir, penilaiId,      
+   637→   637→                      aksesTahap                           
+   638→   638→
+   639→   639→  Perbualan           id, jenis (terus/kumpulan), nama,    Mesej
+   640→   640→                      ahliIds                              
+   641→   641→
+   642→   642→  Mesej               id, perbualanId, penghantarId,       Perbualan
+   643→   643→                      kandungan, lampiranId, masa,         
+   644→   644→                      dibacaOleh                           
+   645→   645→
+   646→   646→  Dokumen             id, tajuk, jenis                     Acara, Staf
+   647→   647→                      (laporan/audio/slaid), failRujukan,  
+   648→   648→                      acaraId, pemuatId, tag, aksesTahap   
+   649→   649→
+   650→   650→  OutputAI            id, jenis, input, output,            Staf
+   651→   651→                      penggunaId, masa, disemak            
+   652→   652→  ---------------------------------------------------------------------------
+   653→   653→
+   654→   654→10.1 Data Contoh
+   655→   655→
+   656→   656→-   Sekurang-kurangnya 30 staf dalam 5 jabatan (Operasi, Jualan,
+   657→   657→    Pemasaran, Kewangan, Sumber Manusia) dengan nama Malaysia pelbagai
+   658→   658→    kaum.
+   659→   659→
+   660→   660→-   Kehadiran 3 bulan, dengan variasi kelewatan dan cuti.
+   661→   661→
+   662→   662→-   KPI dan markah contoh bagi setiap staf (data dummy, akses terhad).
+   663→   663→
+   664→   664→-   40 tugasan pelbagai status termasuk tugasan lewat.
+   665→   665→
+   666→   666→-   12 kursus, 60 pendaftaran dengan markah dan maklum balas.
+   667→   667→
+   668→   668→-   Contoh 3 kumpulan sembang, 200 mesej, 15 dokumen (laporan, audio,
+   669→   669→    slaid) bersaiz kecil.
+   670→   670→
+   671→   671→-   Tiada data peribadi sebenar digunakan.
+   672→   672→
+   673→   673→11. Reka Bentuk Pengguna (UI/UX) dan Skrin Utama
+   674→   674→
+   675→   675→-   Log Masuk dan Pemilihan Peranan (demo)
+   676→   676→
+   677→   677→-   Dashboard (mengikut peranan)
+   678→   678→
+   679→   679→-   Kehadiran: Clock In/Out, rekod bulanan, permohonan cuti
+   680→   680→
+   681→   681→-   Tugasan: papan Kanban, senarai, tugasan tertunggak
+   682→   682→
+   683→   683→-   Kalendar: paparan bulan/minggu, borang mesyuarat
+   684→   684→
+   685→   685→-   Latihan: katalog, kursus saya, kehadiran dan hasil, cadangan AI
+   686→   686→
+   687→   687→-   Pencapaian: profil dan dinding pengiktirafan
+   688→   688→
+   689→   689→-   Sembang: senarai perbualan, tetingkap mesej, lampiran
+   690→   690→
+   691→   691→-   Dokumen: pustaka dengan penapis, pemain audio, pratonton
+   692→   692→
+   693→   693→-   Pembantu AI: penjana bahan HR, ringkasan mesyuarat, chatbot
+   694→   694→
+   695→   695→-   Laporan dan Pentadbiran
+   696→   696→
+   697→   697→Garis panduan: navigasi bar sisi, reka bentuk bersih dan konsisten, mod
+   698→   698→gelap pilihan, label dan mesej ralat dalam Bahasa Malaysia yang jelas.
+   699→   699→
+   700→   700→12. Pematuhan dan Pertimbangan Undang-undang Malaysia
+   701→   701→
+   702→   702→Perkara berikut perlu disahkan dengan penasihat undang-undang dan HR
+   703→   703→sebelum pelaksanaan pengeluaran:
+   704→   704→
+   705→   705→-   Akta Perlindungan Data Peribadi 2010 (PDPA): kebenaran, notis
+   706→   706→    privasi, keselamatan dan tempoh simpanan data staf.
+   707→   707→
+   708→   708→-   Akta Kerja 1955 (dan pindaan terkini): peraturan waktu bekerja,
+   709→   709→    kerja lebih masa, cuti dan rekod pekerja.
+   710→   710→
+   711→   711→-   Caruman berkanun (KWSP, PERKESO, SIP) dan cukai: skop Fasa 2 jika
+   712→   712→    modul gaji ditambah.
+   713→   713→
+   714→   714→-   HRD Corp: pemetaan kursus kepada kelayakan tuntutan levi jika
+   715→   715→    syarikat berdaftar.
+   716→   716→
+   717→   717→-   Cuti umum persekutuan dan cuti negeri Selangor.
+   718→   718→
+   719→   719→13. Pelan Pembangunan Menggunakan z.ai (GLM 5.2)
+   720→   720→
+   721→   721→Pembangunan dibantu AI dilaksanakan secara berperingkat. Pasukan perlu
+   722→   722→mengesahkan keupayaan dan had model GLM 5.2 yang tersedia pada akaun
+   723→   723→z.ai (contohnya saiz konteks dan keupayaan pengekodan) sebelum
+   724→   724→memulakan, dan menyemak setiap kod yang dijana.
+   725→   725→
+   726→   726→  ----------------------------------------------------------------------------
+   727→   727→  Langkah   Aktiviti             Penerangan
+   728→   728→  --------- -------------------- ---------------------------------------------
+   729→   729→  1         Sediakan konteks     Muat naik PRD ini sebagai konteks tetap;
+   730→   730→                                 tetapkan konvensyen kod (TypeScript, struktur
+   731→   731→                                 folder, penamaan).
+   732→   732→
+   733→   733→  2         Perancah projek      Minta GLM 5.2 menjana struktur Vite + React +
+   734→   734→                                 Tailwind, penghalaan dan susun atur utama.
+   735→   735→
+   736→   736→  3         Data dummy           Jana skema, penjana data Faker dan lapisan
+   737→   737→                                 repository (MSW/IndexedDB).
+   738→   738→
+   739→   739→  4         Bina modul satu demi Satu modul setiap sesi (kehadiran, tugasan,
+   740→   740→            satu                 kalendar, dll.), dengan ujian unit.
+   741→   741→
+   742→   742→  5         Integrasi AI         Bina perkhidmatan AI dengan templat prompt
+   743→   743→                                 BM, label 'Dijana AI' dan proksi kunci API.
+   744→   744→
+   745→   745→  6         Semakan kualiti      Semakan kod manusia, ujian e2e, pemeriksaan
+   746→   746→                                 aksesibiliti dan keselamatan.
+   747→   747→
+   748→   748→  7         Demo dan maklum      Demo kepada pihak berkepentingan dan kemas
+   749→   749→            balas                kini PRD.
+   750→   750→  ----------------------------------------------------------------------------
+   751→   751→
+   752→   752→13.1 Contoh Prompt Permulaan
+   753→   753→
+   754→   754→"Anda ialah jurutera perisian kanan. Berdasarkan PRD HRMS Al-Amin Emall
+   755→   755→yang dilampirkan, bina perancah projek React + TypeScript + Vite +
+   756→   756→Tailwind dengan penghalaan untuk modul: Dashboard, Kehadiran, Tugasan,
+   757→   757→Kalendar, Latihan, Pencapaian, Sembang, Dokumen dan Pembantu AI. Gunakan
+   758→   758→MSW dan IndexedDB sebagai pangkalan data dummy, antara muka dalam Bahasa
+   759→   759→Malaysia, dan asingkan lapisan akses data. Jelaskan struktur folder
+   760→   760→sebelum menulis kod."
+   761→   761→
+   762→   762→13.2 Contoh Prompt Modul AI (dalam aplikasi)
+   763→   763→
+   764→   764→"Anda pembantu HR untuk syarikat e-dagang di Malaysia. Berdasarkan
+   765→   765→profil staf (jawatan, kemahiran, sejarah kursus) dan katalog kursus
+   766→   766→berikut, cadangkan 3-5 kursus dengan sebab ringkas dalam Bahasa
+   767→   767→Malaysia. Jangan reka kursus di luar katalog."
+   768→   768→
+   769→   769→14. Fasa dan Garis Masa Cadangan
+   770→   770→
+   771→   771→  --------------------------------------------------------------------------
+   772→   772→  Fasa           Skop                              Tempoh      Hasil
+   773→   773→  -------------- --------------------------------- ----------- -------------
+   774→   774→  Fasa 0         Pengesahan keperluan, reka bentuk 2 minggu    Wireframe
+   775→   775→                 UI (wireframe)                                disahkan
+   776→   776→
+   777→   777→  Fasa 1A        Perancah, auth, dashboard,        3 minggu    Prototaip
+   778→   778→                 kehadiran, tugasan                            teras
+   779→   779→
+   780→   780→  Fasa 1B        Kalendar, latihan, pencapaian     3 minggu    Modul
+   781→   781→                                                               pembangunan
+   782→   782→                                                               staf
+   783→   783→
+   784→   784→  Fasa 1C        Sembang, dokumen, modul AI        3 minggu    Prototaip
+   785→   785→                                                               lengkap
+   786→   786→
+   787→   787→  Fasa 1D        Ujian, pemurnian, demo (UAT)      2 minggu    Prototaip
+   788→   788→                                                               diluluskan
+   789→   789→
+   790→   790→  Fasa 2         Backend sebenar, WebSocket,       8-12 minggu Versi
+   791→   791→                 storan, keselamatan, pelancaran               pengeluaran
+   792→   792→                 perintis                                      
+   793→   793→  --------------------------------------------------------------------------
+   794→   794→
+   795→   795→Anggaran bagi pasukan kecil dengan bantuan AI; perlu dimuktamadkan
+   796→   796→selepas Fasa 0.
+   797→   797→
+   798→   798→15. Risiko dan Mitigasi
+   799→   799→
+   800→   800→  ------------------------------------------------------------------------
+   801→   801→  Risiko                  Tahap       Mitigasi
+   802→   802→  ----------------------- ----------- ------------------------------------
+   803→   803→  Kod AI mengandungi      Tinggi      Semakan kod, ujian automatik,
+   804→   804→  ralat atau kelemahan                imbasan kebergantungan
+   805→   805→  keselamatan                         
+   806→   806→
+   807→   807→  Data peribadi           Tinggi      Data dummy/tanpa nama, dasar
+   808→   808→  didedahkan kepada                   penggunaan AI, proksi dan penapis
+   809→   809→  perkhidmatan AI                     
+   810→   810→
+   811→   811→  Prototaip dianggap      Sederhana   Jelaskan skop prototaip; rancang
+   812→   812→  sebagai produk siap                 Fasa 2 awal
+   813→   813→
+   814→   814→  Prestasi sembang dan    Sederhana   Had saiz fail; pindah ke backend
+   815→   815→  fail besar pada storan              pada Fasa 2
+   816→   816→  pelayar                             
+   817→   817→
+   818→   818→  Penolakan pengguna      Sederhana   Latihan, pasukan perintis, UI mudah
+   819→   819→                                      dalam Bahasa Malaysia
+   820→   820→
+   821→   821→  Output AI tidak tepat   Sederhana   Semakan manusia, had kepada katalog,
+   822→   822→  (halusinasi)                        label AI
+   823→   823→  ------------------------------------------------------------------------
+   824→   824→
+   825→   825→16. Kriteria Penerimaan
+   826→   826→
+   827→   827→-   Semua keperluan berkeutamaan Tinggi (T) berfungsi pada data dummy.
+   828→   828→
+   829→   829→-   Setiap peranan hanya melihat menu dan data yang dibenarkan.
+   830→   830→
+   831→   831→-   Aliran lengkap berjaya: Clock In -> tugasan -> kalendar -> daftar
+   832→   832→    kursus -> hantar mesej -> muat naik dokumen.
+   833→   833→
+   834→   834→-   Modul AI menjana bahan HR dan cadangan kursus dalam Bahasa Malaysia
+   835→   835→    dengan label 'Dijana AI'.
+   836→   836→
+   837→   837→-   Antara muka responsif dan tiada ralat kritikal dalam ujian e2e.
+   838→   838→
+   839→   839→-   Pihak berkepentingan menandatangani UAT.
+   840→   840→
+   841→   841→17. Andaian, Kebergantungan dan Soalan Terbuka
+   842→   842→
+   843→   843→-   Andaian: pangkalan data dummy hanya untuk prototaip; data
+   844→   844→    pengeluaran akan dimigrasi pada Fasa 2.
+   845→   845→
+   846→   846→-   Kebergantungan: akses akaun z.ai dan model GLM 5.2, kunci API model
+   847→   847→    AI.
+   848→   848→
+   849→   849→-   Soalan terbuka: bilangan staf sebenar; sama ada modul gaji
+   850→   850→    diperlukan; keperluan integrasi mesin kehadiran; hos (awan/lokal)
+   851→   851→    dan lokasi data; keperluan transkripsi audio automatik.
+   852→   852→
+   853→   853→18. Kelulusan
+   854→   854→
+   855→   855→  -----------------------------------------------------------------------
+   856→   856→  Peranan             Nama                Tandatangan     Tarikh
+   857→   857→  ------------------- ------------------- --------------- ---------------
+   858→   858→  Penaja Projek                                           
+   859→   859→
+   860→   860→  Pengurus HR                                             
+   861→   861→
+   862→   862→  Ketua Teknologi                                         
+   863→   863→
+   864→   864→  Pengurus Produk                                         
+   865→   865→  -----------------------------------------------------------------------
+   866→   866→
