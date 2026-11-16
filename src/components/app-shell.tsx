@@ -158,9 +158,9 @@ export function AppShell() {
   )
 
   return (
-    <div className="app-shell">
+    <div className="h-screen flex flex-col overflow-hidden">
       {/* Top bar */}
-      <header className="glass-strong sticky top-0 z-40 border-b border-border/30">
+      <header className="glass-strong shrink-0 z-40 border-b border-border/30">
         <div className="flex items-center gap-3 px-4 lg:px-6 py-3">
           <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
             <SheetTrigger asChild>
@@ -264,29 +264,31 @@ export function AppShell() {
         </div>
       </header>
 
-      <div className="flex flex-1 min-h-0">
+      <div className="flex flex-1 min-h-0 overflow-hidden">
         {/* Desktop sidebar */}
-        <aside className="hidden lg:flex w-64 shrink-0 flex-col glass border-r border-border/30 sticky top-[57px] h-[calc(100vh-57px)]">
+        <aside className="hidden lg:flex w-64 shrink-0 flex-col glass border-r border-border/30 h-full">
           {sidebar}
         </aside>
 
         {/* Main content */}
-        <main className="flex-1 min-w-0 overflow-y-auto scrollbar-thin">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeModule}
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.2 }}
-              className="p-4 lg:p-6"
-            >
-              {renderModule()}
-            </motion.div>
-          </AnimatePresence>
+        <main className="flex-1 min-w-0 overflow-y-auto scrollbar-thin flex flex-col">
+          <div className="flex-1">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeModule}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.2 }}
+                className="p-4 lg:p-6"
+              >
+                {renderModule()}
+              </motion.div>
+            </AnimatePresence>
+          </div>
 
           {/* Footer sticky */}
-          <footer className="mt-8 glass border-t border-border/30 px-4 lg:px-6 py-4">
+          <footer className="mt-auto glass border-t border-border/30 px-4 lg:px-6 py-3 shrink-0">
             <div className="flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-muted-foreground">
               <p>© 2026 Al-Amin Emall Sdn Bhd · HRMS v1.1 Prototaip</p>
               <p className="flex items-center gap-2">

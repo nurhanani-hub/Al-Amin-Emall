@@ -75,7 +75,12 @@ export function DashboardModule() {
               <h1 className="text-2xl lg:text-3xl font-bold">{u.name}</h1>
               <div className="flex items-center gap-2 mt-1">
                 <Badge variant="secondary" className="text-[10px]">{ROLE_LABELS[u.roleCode]}</Badge>
-                <span className="text-xs text-muted-foreground">{u.position}</span>
+                {u.position !== ROLE_LABELS[u.roleCode] && (
+                  <span className="text-xs text-muted-foreground">{u.position}</span>
+                )}
+                {data.me?.department?.name && (
+                  <span className="text-xs text-muted-foreground">· {data.me.department.name}</span>
+                )}
               </div>
             </div>
           </div>

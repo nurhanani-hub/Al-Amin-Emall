@@ -254,18 +254,7 @@
   }
 }
 
-/* Sticky footer */
-.app-shell {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-.app-shell > main {
-  flex: 1 0 auto;
-}
-.app-shell > footer {
-  margin-top: auto;
-}
+/* Sticky footer — handled by flex layout in app-shell.tsx */
 
 /* Animasi halus */
 @keyframes float-in {
