@@ -5,7 +5,7 @@ import { motion } from 'framer-motion'
 import {
   Settings, Users, Database, CalendarDays, History, Plus, Save, Search,
   Loader2, Mail, Phone, Building2, MapPin, Trophy, LayoutGrid,
-  ShieldAlert, Download, Filter, Network,
+  ShieldAlert, Download, Filter, Network, UserPlus, Edit, Trash2, Key, X,
 } from 'lucide-react'
 import { api, useApp } from '@/lib/store'
 import { toast } from 'sonner'
@@ -23,6 +23,9 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, Di
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Separator } from '@/components/ui/separator'
 import { ScrollArea } from '@/components/ui/scroll-area'
+import { Textarea } from '@/components/ui/textarea'
+import { Switch } from '@/components/ui/switch'
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog'
 import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
 } from '@/components/ui/table'
@@ -44,6 +47,10 @@ const AUDIT_LABELS: Record<string, string> = {
   PADAM_DOKUMEN: 'Padam Dokumen',
   TUKAR_KATA_LALUAN: 'Tukar Kata Laluan',
   KEMASKINI_TETAPAN: 'Kemaskini Tetapan',
+  TAMBAH_STAF: 'Tambah Staf',
+  UBAH_STAF: 'Ubah Staf',
+  PADAM_STAF: 'Padam Staf',
+  RESET_KATA_LALUAN: 'Reset Kata Laluan',
 }
 
 export function AdminModule() {
@@ -90,6 +97,9 @@ export function AdminModule() {
 
 /* ============ Tab 1: Direktori Staf ============ */
 function DirectoryTab() {
+  const { user } = useApp()
+  const isHrAdmin = user && ['HR', 'ADMIN'].includes(user.roleCode)
+  const isAdmin = user?.roleCode === 'ADMIN'
   const [data, setData] = useState<any>(null)
   const [loading, setLoading] = useState(true)
   const [q, setQ] = useState('')
@@ -97,6 +107,10 @@ function DirectoryTab() {
   const [roleFilter, setRoleFilter] = useState('all')
   const [view, setView] = useState<'cards' | 'org'>('cards')
   const [selected, setSelected] = useState<any>(null)
+  const [showForm, setShowForm] = useState(false)
+  const [editStaff, setEditStaff] = useState<any>(null)
+  const [deleteStaff, setDeleteStaff] = useState<any>(null)
+  const [resetStaff, setResetStaff] = useState<any>(null)
   const setModule = useApp(s => s.setActiveModule)
 
   useEffect(() => { load() }, [])
@@ -131,6 +145,11 @@ function DirectoryTab() {
   return (
     <div className="space-y-4">
       <div className="glass-card p-3 flex flex-col sm:flex-row sm:items-center gap-2">
+        {isHrAdmin && (
+          <Button className="bg-emerald-600 hover:bg-emerald-700 gap-1.5 shrink-0" onClick={() => { setEditStaff(null); setShowForm(true) }}>
+            <UserPlus className="w-4 h-4" /> Tambah Staf
+          </Button>
+        )}
         <div className="relative flex-1">
           <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
           <Input
@@ -175,7 +194,21 @@ function DirectoryTab() {
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 max-h-[70vh] overflow-y-auto scrollbar-thin pr-1">
           {filtered.map((s: any, i: number) => (
             <motion.div key={s.id} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.02 }}>
-              <Card className="glass-card p-4 cursor-pointer" onClick={() => setSelected(s)}>
+              <Card className="glass-card p-4 cursor-pointer relative group" onClick={() => setSelected(s)}>
+                {isHrAdmin && (
+                  <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <Button size="icon" variant="ghost" className="w-7 h-7 text-emerald-600 hover:bg-emerald-500/10"
+                      onClick={(e) => { e.stopPropagation(); setEditStaff(s); setShowForm(true) }} aria-label="Edit staf">
+                      <Edit className="w-3.5 h-3.5" />
+                    </Button>
+                    {isAdmin && s.id !== user?.id && (
+                      <Button size="icon" variant="ghost" className="w-7 h-7 text-rose-600 hover:bg-rose-500/10"
+                        onClick={(e) => { e.stopPropagation(); setDeleteStaff(s) }} aria-label="Padam staf">
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </Button>
+                    )}
+                  </div>
+                )}
                 <div className="flex items-start gap-3">
                   <Avatar className="w-11 h-11 ring-2 ring-emerald-500/20">
                     <AvatarImage src={s.avatarUrl ?? undefined} />
@@ -235,15 +268,291 @@ function DirectoryTab() {
               <DetailRow label="Status" value={selected.status ?? '-'} />
             </div>
           )}
-          <DialogFooter>
+          <DialogFooter className="flex-col sm:flex-row gap-2">
             <Button variant="outline" onClick={() => setSelected(null)}>Tutup</Button>
+            {isHrAdmin && (
+              <Button variant="outline" className="gap-1.5 border-amber-500/30 text-amber-700 hover:bg-amber-500/10"
+                onClick={() => { setResetStaff(selected); setSelected(null) }}>
+                <Key className="w-3.5 h-3.5" /> Reset Kata Laluan
+              </Button>
+            )}
+            {isHrAdmin && (
+              <Button variant="outline" className="gap-1.5 border-emerald-500/30 text-emerald-700 hover:bg-emerald-500/10"
+                onClick={() => { setEditStaff(selected); setShowForm(true); setSelected(null) }}>
+                <Edit className="w-3.5 h-3.5" /> Edit
+              </Button>
+            )}
             <Button className="bg-emerald-600 hover:bg-emerald-700 gap-1.5" onClick={() => { setModule('achievements'); setSelected(null) }}>
-              <Trophy className="w-3.5 h-3.5" /> Lihat Pencapaian
+              <Trophy className="w-3.5 h-3.5" /> Pencapaian
             </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Staff Form Dialog (Add/Edit) */}
+      {showForm && (
+        <StaffFormDialog
+          staff={editStaff}
+          departments={data?.departments ?? []}
+          staffList={data?.staffDirectory ?? []}
+          onClose={() => { setShowForm(false); setEditStaff(null) }}
+          onSaved={() => { setShowForm(false); setEditStaff(null); load() }}
+        />
+      )}
+
+      {/* Delete Confirmation */}
+      <AlertDialog open={!!deleteStaff} onOpenChange={(o) => !o && setDeleteStaff(null)}>
+        <AlertDialogContent className="glass-strong">
+          <AlertDialogHeader>
+            <AlertDialogTitle>Padam Staf?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Adakah anda pasti mahu memadam <strong>{deleteStaff?.name}</strong> ({deleteStaff?.email})?
+              Tindakan ini tidak boleh diundur. Semua rekod berkaitan (kehadiran, cuti, tugasan, dll) akan turut dipadam.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Batal</AlertDialogCancel>
+            <AlertDialogAction className="bg-rose-600 hover:bg-rose-700" onClick={async () => {
+              try {
+                await api(`/api/staff?id=${deleteStaff.id}`, { method: 'DELETE' })
+                toast.success('Staf berjaya dipadam')
+                setDeleteStaff(null)
+                load()
+              } catch (e: any) { toast.error(e.message) }
+            }}>Padam</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {/* Reset Password Dialog */}
+      <ResetPasswordDialog staff={resetStaff} onClose={() => setResetStaff(null)} />
     </div>
+  )
+}
+
+/* ============ Staff Form Dialog (Add/Edit) ============ */
+function StaffFormDialog({ staff, departments, staffList, onClose, onSaved }: {
+  staff: any | null
+  departments: any[]
+  staffList: any[]
+  onClose: () => void
+  onSaved: () => void
+}) {
+  const isEdit = !!staff
+  const [saving, setSaving] = useState(false)
+  const [form, setForm] = useState({
+    name: staff?.name ?? '',
+    email: staff?.email ?? '',
+    roleCode: staff?.roleCode ?? 'STAFF',
+    departmentId: staff?.departmentId ?? staff?.department?.id ?? '',
+    position: staff?.position ?? '',
+    phone: staff?.phone ?? '',
+    supervisorId: staff?.supervisorId ?? staff?.supervisor?.id ?? '',
+    joinDate: staff?.joinDate ? new Date(staff.joinDate).toISOString().slice(0, 10) : new Date().toISOString().slice(0, 10),
+    status: staff?.status ?? 'AKTIF',
+    emergencyName: staff?.emergencyName ?? '',
+    emergencyPhone: staff?.emergencyPhone ?? '',
+    careerGoal: staff?.careerGoal ?? '',
+    password: '',
+  })
+
+  const supOptions = staffList.filter((s: any) => ['SUPERVISOR', 'HR', 'EXEC', 'ADMIN'].includes(s.roleCode) && s.id !== staff?.id)
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault()
+    if (!form.name.trim() || !form.email.trim()) {
+      toast.error('Nama dan e-mel diperlukan')
+      return
+    }
+    setSaving(true)
+    try {
+      const body: any = {
+        name: form.name.trim(),
+        email: form.email.trim(),
+        roleCode: form.roleCode,
+        departmentId: form.departmentId || null,
+        position: form.position.trim() || 'Staf',
+        phone: form.phone || null,
+        supervisorId: form.supervisorId || null,
+        joinDate: form.joinDate,
+        status: form.status,
+        emergencyName: form.emergencyName || null,
+        emergencyPhone: form.emergencyPhone || null,
+        careerGoal: form.careerGoal || null,
+      }
+      if (!isEdit && form.password) body.password = form.password
+
+      if (isEdit) {
+        await api('/api/staff', { method: 'PATCH', body: JSON.stringify({ staffId: staff.id, ...body }) })
+        toast.success('Maklumat staf dikemas kini')
+      } else {
+        const res = await api('/api/staff', { method: 'POST', body: JSON.stringify(body) })
+        toast.success(`Staf baharu dicipta. Kata laluan default: ${res.defaultPassword}`)
+      }
+      onSaved()
+    } catch (e: any) {
+      toast.error(e.message)
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  return (
+    <Dialog open onOpenChange={onClose}>
+      <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto scrollbar-thin">
+        <DialogHeader>
+          <DialogTitle>{isEdit ? 'Edit Staf' : 'Tambah Staf Baharu'}</DialogTitle>
+          <DialogDescription>
+            {isEdit ? 'Kemas kini maklumat staf' : 'Isi borang untuk menambah staf baharu ke dalam sistem'}
+          </DialogDescription>
+        </DialogHeader>
+        <form onSubmit={handleSubmit} className="space-y-3">
+          <div className="grid grid-cols-2 gap-3">
+            <div className="space-y-1.5">
+              <Label className="text-xs">Nama Penuh *</Label>
+              <Input className="glass-input" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} required />
+            </div>
+            <div className="space-y-1.5">
+              <Label className="text-xs">E-mel *</Label>
+              <Input type="email" className="glass-input" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} required />
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            <div className="space-y-1.5">
+              <Label className="text-xs">Peranan</Label>
+              <Select value={form.roleCode} onValueChange={v => setForm({ ...form, roleCode: v })}>
+                <SelectTrigger className="glass-input"><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  {Object.entries(ROLE_LABELS).map(([k, v]) => <SelectItem key={k} value={k}>{v}</SelectItem>)}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-1.5">
+              <Label className="text-xs">Jabatan</Label>
+              <Select value={form.departmentId || 'none'} onValueChange={v => setForm({ ...form, departmentId: v === 'none' ? '' : v })}>
+                <SelectTrigger className="glass-input"><SelectValue placeholder="Pilih jabatan" /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="none">Tiada</SelectItem>
+                  {departments.map((d: any) => <SelectItem key={d.id} value={d.id}>{d.name}</SelectItem>)}
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            <div className="space-y-1.5">
+              <Label className="text-xs">Jawatan</Label>
+              <Input className="glass-input" value={form.position} onChange={e => setForm({ ...form, position: e.target.value })} placeholder="cth: Eksekutif Jualan" />
+            </div>
+            <div className="space-y-1.5">
+              <Label className="text-xs">Telefon</Label>
+              <Input className="glass-input" value={form.phone} onChange={e => setForm({ ...form, phone: e.target.value })} placeholder="+60..." />
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            <div className="space-y-1.5">
+              <Label className="text-xs">Penyelia Langsung</Label>
+              <Select value={form.supervisorId || 'none'} onValueChange={v => setForm({ ...form, supervisorId: v === 'none' ? '' : v })}>
+                <SelectTrigger className="glass-input"><SelectValue placeholder="Tiada" /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="none">Tiada Penyelia</SelectItem>
+                  {supOptions.map((s: any) => <SelectItem key={s.id} value={s.id}>{s.name} ({s.position})</SelectItem>)}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-1.5">
+              <Label className="text-xs">Tarikh Sertai</Label>
+              <Input type="date" className="glass-input" value={form.joinDate} onChange={e => setForm({ ...form, joinDate: e.target.value })} />
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            <div className="space-y-1.5">
+              <Label className="text-xs">Status</Label>
+              <Select value={form.status} onValueChange={v => setForm({ ...form, status: v })}>
+                <SelectTrigger className="glass-input"><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="AKTIF">Aktif</SelectItem>
+                  <SelectItem value="CUTI">Cuti</SelectItem>
+                  <SelectItem value="TIDAK_AKTIF">Tidak Aktif</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            {!isEdit && (
+              <div className="space-y-1.5">
+                <Label className="text-xs">Kata Laluan Sementara</Label>
+                <Input className="glass-input" value={form.password} onChange={e => setForm({ ...form, password: e.target.value })} placeholder="Default: password123" />
+              </div>
+            )}
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            <div className="space-y-1.5">
+              <Label className="text-xs">Kenalan Kecemasan (Nama)</Label>
+              <Input className="glass-input" value={form.emergencyName} onChange={e => setForm({ ...form, emergencyName: e.target.value })} />
+            </div>
+            <div className="space-y-1.5">
+              <Label className="text-xs">Kenalan Kecemasan (Telefon)</Label>
+              <Input className="glass-input" value={form.emergencyPhone} onChange={e => setForm({ ...form, emergencyPhone: e.target.value })} />
+            </div>
+          </div>
+          <div className="space-y-1.5">
+            <Label className="text-xs">Matlamat Kerjaya</Label>
+            <Textarea className="glass-input" rows={2} value={form.careerGoal} onChange={e => setForm({ ...form, careerGoal: e.target.value })} />
+          </div>
+          <DialogFooter>
+            <Button type="button" variant="outline" onClick={onClose}>Batal</Button>
+            <Button type="submit" disabled={saving} className="bg-emerald-600 hover:bg-emerald-700 gap-1.5">
+              {saving ? <><Loader2 className="w-4 h-4 animate-spin" /> Menyimpan...</> : <><Save className="w-4 h-4" /> {isEdit ? 'Simpan' : 'Cipta Staf'}</>}
+            </Button>
+          </DialogFooter>
+        </form>
+      </DialogContent>
+    </Dialog>
+  )
+}
+
+/* ============ Reset Password Dialog ============ */
+function ResetPasswordDialog({ staff, onClose }: { staff: any | null; onClose: () => void }) {
+  const [newPwd, setNewPwd] = useState('')
+  const [saving, setSaving] = useState(false)
+
+  if (!staff) return null
+
+  async function handleReset() {
+    if (newPwd.length < 6) { toast.error('Kata laluan sekurang-kurangnya 6 aksara'); return }
+    setSaving(true)
+    try {
+      await api('/api/staff', { method: 'PUT', body: JSON.stringify({ staffId: staff.id, newPassword: newPwd }) })
+      toast.success(`Kata laluan ${staff.name} telah direset`)
+      onClose()
+    } catch (e: any) { toast.error(e.message) }
+    finally { setSaving(false) }
+  }
+
+  return (
+    <Dialog open onOpenChange={onClose}>
+      <DialogContent className="max-w-md">
+        <DialogHeader>
+          <DialogTitle>Reset Kata Laluan</DialogTitle>
+          <DialogDescription>
+            Reset kata laluan untuk <strong>{staff.name}</strong> ({staff.email})
+          </DialogDescription>
+        </DialogHeader>
+        <div className="space-y-3">
+          <div className="space-y-1.5">
+            <Label className="text-xs">Kata Laluan Baharu</Label>
+            <Input className="glass-input" value={newPwd} onChange={e => setNewPwd(e.target.value)} placeholder="Minimum 6 aksara" type="text" />
+          </div>
+          <Button size="sm" variant="outline" className="w-full" onClick={() => setNewPwd('password123')}>
+            Guna default: password123
+          </Button>
+        </div>
+        <DialogFooter>
+          <Button variant="outline" onClick={onClose}>Batal</Button>
+          <Button disabled={saving} onClick={handleReset} className="bg-amber-600 hover:bg-amber-700 gap-1.5">
+            {saving ? <><Loader2 className="w-4 h-4 animate-spin" /> Menyimpan...</> : <><Key className="w-4 h-4" /> Reset</>}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   )
 }
 
